@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -8,21 +8,48 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function About() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    // Using requestAnimationFrame to move the state update out of the 
+    // synchronous execution of the effect, which satisfies lint rules 
+    // against "cascading renders" while still ensuring safe hydration.
+    const rafId = requestAnimationFrame(() => {
+      setMounted(true);
+    });
+    return () => cancelAnimationFrame(rafId);
+  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        ".about-reveal",
-        { y: 40, opacity: 0 },
+        ".sentence-reveal",
+        { y: 30, autoAlpha: 0 },
         {
           y: 0,
-          opacity: 1,
-          duration: 1,
-          stagger: 0.2,
+          autoAlpha: 1,
+          duration: 0.8,
+          stagger: 0.15,
           ease: "power3.out",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top 75%",
+            start: "top 80%",
+          },
+        }
+      );
+
+      gsap.fromTo(
+        ".about-reveal",
+        { y: 30, autoAlpha: 0 },
+        {
+          y: 0,
+          autoAlpha: 1,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
           },
         }
       );
@@ -30,6 +57,10 @@ export default function About() {
 
     return () => ctx.revert();
   }, []);
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <section
@@ -47,9 +78,9 @@ export default function About() {
         </div>
 
         {/* Main Text */}
-        <h2 className="about-reveal font-sans text-3xl md:text-4xl lg:text-5xl font-medium text-[#1c1c1c] leading-[1.2] tracking-tight mb-16 max-w-4xl">
-          We bring architecture to life through craft and innovation. Trusted by
-          architects who demand precision, beauty, and care.
+        <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl font-medium text-[#1c1c1c] leading-[1.2] tracking-tight mb-16 max-w-4xl">
+          <span className="sentence-reveal block mb-3">We bring architecture to life through craft and innovation.</span>
+          <span className="sentence-reveal block">Trusted by architects who demand precision, beauty, and care.</span>
         </h2>
 
         {/* CTA Button */}

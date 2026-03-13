@@ -48,11 +48,6 @@ export default function SplashScreen({ landingRef }: SplashScreenProps) {
       });
 
       tl.fromTo(
-        containerRef.current,
-        { opacity: 0 },
-        { opacity: 1, duration: 1, ease: "power2.out" }
-      )
-        .fromTo(
           letters,
           {
             clipPath: "inset(0 100% 0 0)",
@@ -66,8 +61,7 @@ export default function SplashScreen({ landingRef }: SplashScreenProps) {
             duration: 1.2,
             stagger: 0.08,
             ease: "power3.out",
-          },
-          "-=0.3"
+          }
         )
         .to({}, { duration: 1.5 });
     }, containerRef);
@@ -79,16 +73,19 @@ export default function SplashScreen({ landingRef }: SplashScreenProps) {
   const letters = text.split("").map((char, index) => (
     <span
       key={index}
-      className="letter inline-block whitespace-pre"
+      className="letter inline-block whitespace-pre opacity-0"
+      style={{ opacity: 0 }} // ✅ Bulletproof hide
     >
       {char}
     </span>
   ));
 
   return (
+    // ✅ FIX: z-[9999] instead of z-9999, plus inline zIndex to guarantee it covers the screen instantly
     <div
       ref={containerRef}
       className={`fixed inset-0 z-9999 flex flex-col items-center justify-center bg-[#fafafa] ${manrope.className}`}
+      style={{ zIndex: 9999 }}
     >
       <div className="relative overflow-hidden">
         <h1

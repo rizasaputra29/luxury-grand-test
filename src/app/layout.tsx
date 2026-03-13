@@ -23,6 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${manrope.variable} antialiased relative`}
+        suppressHydrationWarning
       >
         <SplashScreenWrapper>
           {children}

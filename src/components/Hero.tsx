@@ -55,12 +55,24 @@ export default function Hero() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
-    // Add success state logic here
   };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ delay: 0.2 });
+
+      // ✅ FIX: Premium, smooth zoom-out and fade transition for the Hero Image
+      gsap.fromTo(
+        ".hero-bg-wrapper",
+        { opacity: 0, scale: 1.05 },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 2.5,
+          ease: "power2.out",
+          delay: 0.5, // Waits perfectly for the splash screen to begin fading
+        }
+      );
 
       // Initial layout fade-in
       tl.fromTo(
@@ -106,8 +118,9 @@ export default function Hero() {
     <section id="home" className="relative w-full flex flex-col min-h-screen overflow-hidden">
       
       {/* Shared Background Image spanning both text hero and form */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 h-full main-hero-bg">
+      {/* ✅ FIX: Added inline style={{ opacity: 0 }} for bulletproof initial hiding */}
+      <div className="absolute inset-0 z-0 opacity-0 hero-bg-wrapper bg-white" style={{ opacity: 0 }}>
+        <div className="absolute inset-0 h-full main-hero-bg transform origin-center">
             <Image
             src="https://images.unsplash.com/photo-1619216083420-6e54b895f730?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
             alt="Luxury Property"

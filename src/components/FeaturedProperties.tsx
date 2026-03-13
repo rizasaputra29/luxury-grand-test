@@ -39,18 +39,34 @@ export default function FeaturedProperties() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Reveal the section header
       gsap.fromTo(
-        ".prop-header",
-        { y: 40, opacity: 0 },
+        ".sentence-reveal",
+        { y: 30, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 1,
+          duration: 0.8,
+          stagger: 0.15,
           ease: "power3.out",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top 75%",
+            start: "top 80%",
+          },
+        }
+      );
+
+      // Reveal the section header
+      gsap.fromTo(
+        ".prop-header",
+        { y: 30, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
           },
         }
       );
@@ -130,7 +146,8 @@ export default function FeaturedProperties() {
             Featured Collection
           </span>
           <h2 className="font-sans text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight text-black leading-[1.1]">
-            Exceptional properties, curated for the visionary.
+            <span className="sentence-reveal block mb-3">Exceptional properties,</span>
+            <span className="sentence-reveal block">curated for the visionary.</span>
           </h2>
         </div>
 

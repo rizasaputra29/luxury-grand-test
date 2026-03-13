@@ -40,16 +40,32 @@ export default function WhyChooseUs() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        ".wcu-header",
-        { y: 40, opacity: 0 },
+        ".sentence-reveal",
+        { y: 30, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 1,
+          duration: 0.8,
+          stagger: 0.15,
           ease: "power3.out",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top 75%",
+            start: "top 80%",
+          },
+        }
+      );
+
+      gsap.fromTo(
+        ".wcu-header",
+        { y: 30, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
           },
         }
       );
@@ -97,7 +113,8 @@ export default function WhyChooseUs() {
             Why Choose Us
           </span>
           <h2 className="font-sans text-4xl md:text-5xl lg:text-5xl font-medium tracking-tight text-black leading-[1.1]">
-            Elevating the standard of luxury representation.
+            <span className="sentence-reveal block mb-3">Elevating the standard</span>
+            <span className="sentence-reveal block">of luxury representation.</span>
           </h2>
         </div>
 

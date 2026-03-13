@@ -15,7 +15,6 @@ export default function SplashScreenWrapper({
   useEffect(() => {
     if (!landingRef.current) return;
 
-    // Wait for the splash screen to finish animating the landingRef in
     const observer = new MutationObserver(() => {
       if (!landingRef.current) return;
       const style = window.getComputedStyle(landingRef.current);
@@ -31,7 +30,6 @@ export default function SplashScreenWrapper({
       attributeFilter: ["style", "class"],
     });
 
-    // Safe fallback timer just in case
     const timer = setTimeout(() => setIsSplashFinished(true), 3500);
 
     return () => {
@@ -44,12 +42,11 @@ export default function SplashScreenWrapper({
     <>
       <SplashScreen landingRef={landingRef} />
       
-      {/* Main App Content */}
-      <div ref={landingRef} className="opacity-0">
+      {/* ✅ FIX: Added style={{ opacity: 0 }} to physically prevent the HTML from flashing */}
+      <div ref={landingRef} className="opacity-0" style={{ opacity: 0 }}>
         {children}
       </div>
 
-      {/* Nav is hidden until Splash is fully done, then fades in smoothly */}
       <div
         className={`transition-opacity duration-1000 ease-in-out relative z-5000 ${
           isSplashFinished ? "opacity-100" : "opacity-0 pointer-events-none"

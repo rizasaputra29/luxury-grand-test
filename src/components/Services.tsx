@@ -39,18 +39,34 @@ export default function Services() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Header reveal
       gsap.fromTo(
-        ".services-header",
-        { y: 40, opacity: 0 },
+        ".sentence-reveal",
+        { y: 30, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 1,
+          duration: 0.8,
+          stagger: 0.15,
           ease: "power3.out",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top 75%",
+            start: "top 80%",
+          },
+        }
+      );
+
+      // Header reveal
+      gsap.fromTo(
+        ".services-header",
+        { y: 30, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 80%",
           },
         }
       );
@@ -91,7 +107,8 @@ export default function Services() {
             Our Services
           </span>
           <h2 className="font-sans text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight text-black leading-[1.1]">
-            Comprehensive excellence across the entire luxury spectrum.
+            <span className="sentence-reveal block mb-3">Comprehensive excellence</span>
+            <span className="sentence-reveal block">across the entire luxury spectrum.</span>
           </h2>
         </div>
 
