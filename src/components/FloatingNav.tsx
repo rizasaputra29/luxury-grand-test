@@ -8,6 +8,7 @@ export default function FloatingNav() {
   const [isOpen, setIsOpen] = useState(false);
   const [currentSection, setCurrentSection] = useState("HOME");
   const manuallyClosedAtBottom = useRef(false);
+  const isInitialMount = useRef(true); // Prevent initial GSAP glitch
 
   const formatSectionName = (rawId: string) => {
     if (!rawId) return "HOME";
@@ -81,12 +82,10 @@ export default function FloatingNav() {
         });
       },
       {
-        // Trigger when a section is visible in the viewport
         rootMargin: "-30% 0px -40% 0px",
       }
     );
 
-    // Observe all sections
     document.querySelectorAll("section").forEach((section) => {
       observer.observe(section);
     });
@@ -95,7 +94,19 @@ export default function FloatingNav() {
   }, []);
 
   useEffect(() => {
-    // Animate dialog open/close
+    // 1. Prevent the "fade out" glitch on initial page refresh
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      gsap.set(".global-menu-dialog", {
+        y: "20px",
+        opacity: 0,
+        scale: 0.95,
+        autoAlpha: 0,
+      });
+      return;
+    }
+
+    // 2. Animate dialog open/close smoothly thereafter
     if (isOpen) {
       gsap.to(".global-menu-dialog", {
         y: "0%",

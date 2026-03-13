@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
-import FloatingNav from "@/components/FloatingNav";
 import SplashScreenWrapper from "@/components/SplashScreenWrapper";
 import "./globals.css";
 
@@ -28,7 +27,6 @@ export default function RootLayout({
         <SplashScreenWrapper>
           {children}
         </SplashScreenWrapper>
-        <FloatingNav />
       </body>
     </html>
   );
