@@ -243,16 +243,10 @@ export default function FloatingNav() {
             className="flex items-center justify-center hover:opacity-70 transition-opacity"
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M12 2L22 8V16L12 22L2 16V8L12 2Z" />
-            </svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M2.49951 21.5H21.4995V9.7069L12 2.5L2.49951 9.7069V21.5ZM18.9997 19.9999H4.99969V10.4999L11.9997 5.49993L18.9997 10.4999V19.9999Z" fill="#D9D9D9"/>
+</svg>
+
           </button>
 
           {/* Center Dynamic Text */}
