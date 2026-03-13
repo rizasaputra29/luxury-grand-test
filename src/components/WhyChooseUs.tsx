@@ -1,10 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
+import { motion, Variants } from "framer-motion";
 
 const features = [
   {
@@ -33,137 +29,120 @@ const features = [
   },
 ];
 
-export default function WhyChooseUs() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<HTMLDivElement>(null);
+const headerVariants: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        ".sentence-reveal",
-        { y: 30, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-          },
-        }
-      );
+const sentenceVariants: Variants = {
+  hidden: { opacity: 0, filter: "blur(10px)", y: 40 },
+  visible: {
+    opacity: 1,
+    filter: "blur(0px)",
+    y: 0,
+    transition: {
+      duration: 1.2,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
 
-      gsap.fromTo(
-        ".wcu-header",
-        { y: 30, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-          },
-        }
-      );
+const itemVariants: Variants = {
+  hidden: { y: 60, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 1,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
 
-      gsap.fromTo(
-        sectionRef.current?.querySelectorAll(".feature-item") || [],
-        { y: 60, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          stagger: 0.15,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 60%",
-          },
-        }
-      );
+const mapVariants: Variants = {
+  hidden: { y: 60, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 1.2,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
 
-      gsap.fromTo(
-        mapRef.current,
-        { y: 60, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1.2,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: mapRef.current,
-            start: "top 75%",
-          },
-        }
-      );
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
-
+function FeatureItem({ feature }: { feature: typeof features[0] }) {
   return (
-    <section id="why-us" ref={sectionRef} className="py-32 md:py-48 bg-[#f5f5f5] overflow-hidden">
+    <motion.div
+      variants={itemVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-10%" }}
+      className="feature-item relative group"
+    >
+      <div className="absolute top-0 left-10 -translate-y-6 sm:-translate-y-8 md:-translate-y-12 -translate-x-4 sm:-translate-x-6 md:-translate-x-8 text-[8rem] sm:text-[10rem] md:text-[12rem] lg:text-[14rem] leading-none font-sans font-bold text-black/3 select-none pointer-events-none group-hover:text-black/5 transition-colors duration-700">
+        {feature.number}
+      </div>
+      
+      <div className="relative z-10 pt-8 pl-4 border-l border-black/10 group-hover:border-black/30 transition-colors duration-500">
+        <h3 className="font-sans text-xl sm:text-2xl md:text-3xl font-medium text-black mb-4 md:mb-6">
+            {feature.title}
+        </h3>
+        <p className="font-sans text-base sm:text-lg text-black/60 font-light leading-relaxed max-w-sm">
+            {feature.description}
+        </p>
+      </div>
+    </motion.div>
+  );
+}
+
+export default function WhyChooseUs() {
+  return (
+    <section id="why-us" className="py-32 md:py-48 bg-[#f5f5f5] overflow-hidden">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-        <div className="wcu-header max-w-2xl mb-24 md:mb-32">
-          <span className="font-sans text-xs uppercase tracking-[0.2em] text-black/40 mb-6 block">
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-10%" }}
+          variants={headerVariants}
+          className="wcu-header max-w-2xl mb-24 md:mb-32"
+        >
+          <motion.span variants={headerVariants} className="font-sans text-xs uppercase tracking-[0.2em] text-black/40 mb-6 block">
             Why Choose Us
-          </span>
-          <h2 className="font-sans text-4xl md:text-5xl lg:text-5xl font-medium tracking-tight text-black leading-[1.1]">
-            <span className="sentence-reveal block mb-3">Elevating the standard</span>
-            <span className="sentence-reveal block">of luxury representation.</span>
-          </h2>
-        </div>
+          </motion.span>
+          <motion.h2 className="font-sans text-4xl md:text-5xl lg:text-5xl font-medium tracking-tight text-black leading-[1.1]">
+            <motion.span variants={sentenceVariants} className="block mb-3">Elevating the standard</motion.span>
+            <motion.span variants={sentenceVariants} className="block">of luxury representation.</motion.span>
+          </motion.h2>
+        </motion.div>
 
         <div className="grid lg:grid-cols-3 gap-12 lg:gap-8">
           <div className="grid sm:grid-cols-2 lg:grid-cols-1 gap-x-8 gap-y-20 lg:gap-x-12">
             {features.slice(0, 2).map((feature) => (
-              <div
-                key={feature.number}
-                className="feature-item relative group"
-              >
-                <div className="absolute top-0 left-10 -translate-y-6 sm:-translate-y-8 md:-translate-y-12 -translate-x-4 sm:-translate-x-6 md:-translate-x-8 text-[8rem] sm:text-[10rem] md:text-[12rem] lg:text-[14rem] leading-none font-sans font-bold text-black/3 select-none pointer-events-none group-hover:text-black/5 transition-colors duration-700">
-                  {feature.number}
-                </div>
-                
-                <div className="relative z-10 pt-8 pl-4 border-l border-black/10 group-hover:border-black/30 transition-colors duration-500">
-                  <h3 className="font-sans text-xl sm:text-2xl md:text-3xl font-medium text-black mb-4 md:mb-6">
-                      {feature.title}
-                  </h3>
-                  <p className="font-sans text-base sm:text-lg text-black/60 font-light leading-relaxed max-w-sm">
-                      {feature.description}
-                  </p>
-                </div>
-              </div>
+              <FeatureItem key={feature.number} feature={feature} />
             ))}
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-1 gap-x-8 gap-y-20 lg:gap-x-12">
             {features.slice(2, 4).map((feature) => (
-              <div
-                key={feature.number}
-                className="feature-item relative group"
-              >
-                <div className="absolute top-0 left-10 -translate-y-6 sm:-translate-y-8 md:-translate-y-12 -translate-x-4 sm:-translate-x-6 md:-translate-x-8 text-[8rem] sm:text-[10rem] md:text-[12rem] lg:text-[14rem] leading-none font-sans font-bold text-black/3 select-none pointer-events-none group-hover:text-black/5 transition-colors duration-700">
-                  {feature.number}
-                </div>
-                
-                <div className="relative z-10 pt-8 pl-4 border-l border-black/10 group-hover:border-black/30 transition-colors duration-500">
-                  <h3 className="font-sans text-xl sm:text-2xl md:text-3xl font-medium text-black mb-4 md:mb-6">
-                      {feature.title}
-                  </h3>
-                  <p className="font-sans text-base sm:text-lg text-black/60 font-light leading-relaxed max-w-sm">
-                      {feature.description}
-                  </p>
-                </div>
-              </div>
+              <FeatureItem key={feature.number} feature={feature} />
             ))}
           </div>
 
-          <div ref={mapRef} className="lg:sticky lg:top-32 lg:self-start">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-10%" }}
+            variants={mapVariants}
+            className="lg:sticky lg:top-32 lg:self-start"
+          >
             <div className="bg-white/95 backdrop-blur-xl rounded-4xl p-6 md:p-8 shadow-[0_30px_80px_-15px_rgba(0,0,0,0.15)] border border-black/5 overflow-hidden">
               <div className="mb-6">
                 <span className="font-sans text-[10px] uppercase tracking-[0.2em] text-black/40 block font-bold">
@@ -219,7 +198,7 @@ export default function WhyChooseUs() {
                 </a>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

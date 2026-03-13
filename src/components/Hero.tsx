@@ -76,9 +76,14 @@ export default function Hero() {
 
       // Initial layout fade-in
       tl.fromTo(
-        [title1Ref.current, bottomTextRef.current],
+        title1Ref.current,
         { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1.2, stagger: 0.15, ease: "power3.out" }
+        { 
+          y: 0, 
+          opacity: 1, 
+          duration: 1.2, 
+          ease: "power4.out" 
+        }
       );
 
       // Smooth parallax on the background image

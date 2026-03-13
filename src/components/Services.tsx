@@ -1,10 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
+import { motion, Variants } from "framer-motion";
 
 const services = [
   {
@@ -33,89 +29,74 @@ const services = [
   },
 ];
 
+const headerVariants: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+const sentenceVariants: Variants = {
+  hidden: { opacity: 0, filter: "blur(10px)", y: 40 },
+  visible: {
+    opacity: 1,
+    filter: "blur(0px)",
+    y: 0,
+    transition: {
+      duration: 1.2,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { y: 50, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.8,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
 export default function Services() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const listRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        ".sentence-reveal",
-        { y: 30, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-          },
-        }
-      );
-
-      // Header reveal
-      gsap.fromTo(
-        ".services-header",
-        { y: 30, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-          },
-        }
-      );
-
-      // Staggered list item reveal
-      const items = listRef.current?.querySelectorAll(".service-item");
-      items?.forEach((item) => {
-        gsap.fromTo(
-            item,
-            { y: 50, opacity: 0 },
-            {
-                y: 0,
-                opacity: 1,
-                duration: 0.8,
-                ease: "power3.out",
-                scrollTrigger: {
-                    trigger: item,
-                    start: "top 85%",
-                }
-            }
-        )
-      });
-
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
     <section
       id="services"
-      ref={sectionRef}
       className="py-32 md:py-48 bg-white"
     >
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-        <div className="services-header max-w-2xl mb-24 md:mb-32">
-          <span className="font-sans text-xs uppercase tracking-[0.2em] text-black/40 mb-6 block">
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-10%" }}
+          variants={headerVariants}
+          className="max-w-2xl mb-24 md:mb-32"
+        >
+          <motion.span variants={headerVariants} className="font-sans text-xs uppercase tracking-[0.2em] text-black/40 mb-6 block">
             Our Services
-          </span>
-          <h2 className="font-sans text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight text-black leading-[1.1]">
-            <span className="sentence-reveal block mb-3">Comprehensive excellence</span>
-            <span className="sentence-reveal block">across the entire luxury spectrum.</span>
-          </h2>
-        </div>
+          </motion.span>
+          <motion.h2 className="font-sans text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight text-black leading-[1.1]">
+            <motion.span variants={sentenceVariants} className="block mb-3">Comprehensive excellence</motion.span>
+            <motion.span variants={sentenceVariants} className="block">across the entire luxury spectrum.</motion.span>
+          </motion.h2>
+        </motion.div>
 
-        <div ref={listRef} className="flex flex-col">
+        <div className="flex flex-col">
           {services.map((service, index) => (
-            <div
+            <motion.div
               key={service.id}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-5%" }}
+              variants={itemVariants}
               className="service-item group relative border-t border-black/10 py-12 md:py-16 cursor-pointer flex flex-col md:flex-row md:items-start gap-6 md:gap-12"
             >
               {/* Background hover reveal - absolute pure minimalist impact */}
@@ -143,7 +124,7 @@ export default function Services() {
                     </span>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
           {/* Final border bottom */}
           <div className="border-t border-black/10 w-full" />
