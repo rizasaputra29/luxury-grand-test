@@ -11,7 +11,7 @@ const manrope = Manrope({
 
 export const metadata: Metadata = {
   title: "Luxury Grand - Premium Real Estate",
-  description: "Discover exceptional properties with Luxury Grand. Where luxury meets elegance in real estate.",
+  description: "Discovers exceptional properties with Luxury Grand. Where luxury meets elegance in real estate.",
 };
 
 export default function RootLayout({
